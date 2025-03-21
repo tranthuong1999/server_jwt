@@ -7,7 +7,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const CryptoJS = require("crypto-js");
 const SECRET_KEY = process.env.SECRET_KEY;
-const allowedOrigins = ["http://localhost:3000", "https://client-o1zn3ik6r-tranthuongs-projects.vercel.app"];
+const allowedOrigins = ["http://localhost:3000", "https://client-jwt-a88b.vercel.app"];
 
 
 const app = express();
