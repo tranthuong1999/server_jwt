@@ -48,7 +48,6 @@ const decryptPassword = (encryptedPassword) => {
 };
 
 app.get("/", async (req, res) => {
-    console.log("checking", process.env.SECRET_KEY)
     res.json({ message: "Hello" });
 })
 // Signup Route
@@ -83,7 +82,12 @@ app.post("/login", async (req, res) => {
     // Generate JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
     // Store token in HTTP-only cookie
-    res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "strict" });
+    // res.cookie("token", token, { httpOnly: true, secure: false, sameSite: "strict" });
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", // Ensure HTTPS in production
+        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Adjust for cross-origin
+    });
     res.json({ message: "Login successful" });
 });
 
@@ -96,9 +100,7 @@ app.post("/logout", (req, res) => {
 // Middleware to verify JWT from cookies
 const authMiddleware = (req, res, next) => {
     const token = req.cookies.token;
-    console.log("token", token)
     if (!token) return res.status(401).json({ message: "Access Denied" });
-
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET);
         req.user = verified;
