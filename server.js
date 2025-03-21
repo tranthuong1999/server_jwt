@@ -7,6 +7,8 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const CryptoJS = require("crypto-js");
 const SECRET_KEY = process.env.SECRET_KEY;
+const allowedOrigins = ["http://localhost:3000", "https://your-deployed-frontend.com"];
+
 
 
 
@@ -15,13 +17,20 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Enable CORS with credentials
+
 app.use(cors({
-    origin: "http://localhost:3000", // Frontend URL
-    credentials: true, // Allow cookies
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true,
 }));
 
 // Connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/auth_jwt", {
+mongoose.connect("mongodb+srv://tranthuong:tranthuong@cluster0.dq5gz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
