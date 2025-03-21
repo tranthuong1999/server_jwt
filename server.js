@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const CryptoJS = require("crypto-js");
-const SECRET_KEY = "hellokitty";
+const SECRET_KEY = process.env.SECRET_KEY;
 
 
 const app = express();
@@ -38,6 +38,7 @@ const decryptPassword = (encryptedPassword) => {
 };
 
 app.get("/", async (req, res) => {
+    console.log("checking", process.env.SECRET_KEY)
     res.json({ message: "Hello" });
 })
 // Signup Route
