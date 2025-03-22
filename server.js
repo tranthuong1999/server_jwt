@@ -85,6 +85,7 @@ app.post("/login", async (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // Ensure HTTPS in production
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // Adjust for cross-origin
+        path: "/"
     });
     res.json({ message: "Login successful" });
 });
