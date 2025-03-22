@@ -91,7 +91,8 @@ app.post("/login", async (req, res) => {
 
 // Logout Route (Clear Cookie)
 app.post("/logout", (req, res) => {
-    res.clearCookie("token");
+    // res.clearCookie("token");
+    res.clearCookie("token", { path: "/", sameSite: "none", secure: true });
     res.json({ message: "Logged out" });
 });
 
